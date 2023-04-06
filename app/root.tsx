@@ -85,9 +85,7 @@ export function ErrorBoundary() {
       <Document title='Error!'>
         <Layout>
           <Box>
-            <Typography variant='h2'>
-              Error
-            </Typography>
+            <Typography variant='h2'>Error</Typography>
             <Typography variant='subtitle1'>Status: {error.status}</Typography>
             <Typography variant='subtitle2'>{error.data.message}</Typography>
             <hr />
