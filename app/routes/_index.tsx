@@ -1,32 +1,37 @@
 import type {V2_MetaFunction} from '@remix-run/node'
-import {CardItem, useWindowSize} from '~/src'
+import {CardItem, getNews, useWindowSize, CONSTANT, useRefetch} from '~/src'
 import {FixedSizeList as List} from 'react-window'
+import {json} from '@remix-run/node'
+import {useLoaderData, useRevalidator} from '@remix-run/react'
 
 export const meta: V2_MetaFunction = () => {
-  return [{title: 'Hacker News App'}]
+  return [{title: CONSTANT.TITLE}]
 }
-const array = new Array(100).fill(0).map((_, index) => ({
-  title: `Firefox engineers discover a Windows Defender bug that causes high CPU usage`,
-  id: index,
-  time: 1175714200,
-  score: 123 + index,
-  by: 'Dovlet',
-}))
 
-const Row = ({index, style}: {index: number; style?: React.CSSProperties}) => (
-  <CardItem data={array[index]} key={index} style={style} />
-)
+export const loader = async () => {
+  const response = await getNews()
+  return json(response, {
+    headers: {'Cache-Control': `max-age=${CONSTANT.REFETCH_TIMEOUT}`},
+  })
+}
 
 const Index = () => {
   const size = useWindowSize()
+  const products = useLoaderData<typeof loader>()
+  const {revalidate} = useRevalidator()
 
+  useRefetch(revalidate, CONSTANT.REFETCH_TIMEOUT)
+
+  const Row = ({index, style}: {index: number; style?: React.CSSProperties}) => (
+    <CardItem data={products[index]} key={index} style={style} />
+  )
   return (
     size.height && (
       <List
-        height={size.height - 100}
-        itemCount={array.length}
-        itemSize={80}
-        width={'100%'}>
+        height={size.height - CONSTANT.LIST_HEIGHT}
+        itemCount={products.length}
+        itemSize={CONSTANT.ITEM_SIZE}
+        width={CONSTANT.LIST_WIDTH}>
         {Row}
       </List>
     )

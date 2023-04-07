@@ -1,7 +1,7 @@
 import {Wrapper, ContentWrapper, Points, Author, Time} from './CardItem.styles'
 import type {CardItemData} from './CardItem.model'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
-import {getDifferenceBetweenTimes} from '~/src/utilities/getDifferenseBetweenTimes.utilities'
+import {getDifferenceBetweenTimes} from '~/src/utilities/getDifferenceBetweenTimes.utilities'
 import {Typography} from '@mui/material'
 
 const CardItem = ({
