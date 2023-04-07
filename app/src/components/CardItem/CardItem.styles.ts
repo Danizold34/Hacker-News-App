@@ -12,6 +12,7 @@ export const Wrapper = styled('div')`
       justify-content: start;
       align-items: start;
       gap: 10px;
+      cursor: pointer;
       padding: 0 10px 10px 10px;
       &:hover {
         -webkit-box-shadow: 0px -5px 5px -1px rgba(16, 141, 197, 0.61) inset;
@@ -36,5 +37,9 @@ export const Points = styled(Typography)`
   justify-content: center;
   align-items: start;
 `
+export const Title = styled(Typography)`
+  color: ${(props) => props.theme.palette.secondary.dark};
+`
+
 export const Author = styled(Points)``
 export const Time = styled(Author)``

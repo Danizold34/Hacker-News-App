@@ -3,4 +3,5 @@ export interface CardItemData {
   by: string
   time: number
   score: number
+  id: number
 }
