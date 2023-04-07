@@ -1,20 +1,41 @@
-import {Typography} from '@mui/material'
 import type {V2_MetaFunction} from '@remix-run/node'
-import {Link} from '@remix-run/react'
+import {CardItem, getNews, useWindowSize, CONSTANT, useRefetch} from '~/src'
+import {FixedSizeList as List} from 'react-window'
+import {json} from '@remix-run/node'
+import {useLoaderData, useRevalidator} from '@remix-run/react'
 
 export const meta: V2_MetaFunction = () => {
-  return [{title: 'Hacker News App'}]
+  return [{title: CONSTANT.TITLE}]
 }
 
-export default function Index() {
+export const loader = async () => {
+  const response = await getNews()
+  return json(response, {
+    headers: {'Cache-Control': `max-age=${CONSTANT.REFETCH_TIMEOUT}`},
+  })
+}
+
+const Index = () => {
+  const size = useWindowSize()
+  const products = useLoaderData<typeof loader>()
+  const {revalidate} = useRevalidator()
+
+  useRefetch(revalidate, CONSTANT.REFETCH_TIMEOUT)
+
+  const Row = ({index, style}: {index: number; style?: React.CSSProperties}) => (
+    <CardItem data={products[index]} key={index} style={style} />
+  )
   return (
-    <>
-      <Typography variant='h4' component='h1' gutterBottom>
-        Material UI Remix in TypeScript example
-      </Typography>
-      <Link to='/about' color='secondary'>
-        Go to the about page
-      </Link>
-    </>
+    size.height && (
+      <List
+        height={size.height - CONSTANT.LIST_HEIGHT}
+        itemCount={products.length}
+        itemSize={CONSTANT.ITEM_SIZE}
+        width={CONSTANT.LIST_WIDTH}>
+        {Row}
+      </List>
+    )
   )
 }
+
+export default Index

@@ -1,15 +1,11 @@
-import * as React from 'react';
-import {Box,Container} from '@mui/material';
+import {Box} from '@mui/material'
+import {Container} from './Layout.styles'
 
-
-
-export default function Layout({ children }: { children: React.ReactNode }) {
+const Layout = ({children}: {children: React.ReactNode}) => {
   return (
-    <Container maxWidth="sm">
-      <Box sx={{ my: 4 }}>
-        {children}
-      </Box>
+    <Container maxWidth='lg'>
+      <Box sx={{my: 4}}>{children}</Box>
     </Container>
-  );
+  )
 }
-
+export default Layout

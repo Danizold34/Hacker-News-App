@@ -1,10 +1,10 @@
 import {RemixBrowser} from '@remix-run/react'
-import * as React from 'react'
-import * as ReactDOM from 'react-dom/client'
+import ReactDOM from 'react-dom/client'
 import {CacheProvider} from '@emotion/react'
 import {ThemeProvider} from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import {theme, createEmotionCache, ClientStyleContext} from './src'
+import React from 'react'
 
 interface ClientCacheProviderProps {
   children: React.ReactNode
