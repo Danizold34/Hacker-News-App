@@ -5,9 +5,12 @@ export const getNews = async () => {}
 
 export const apiService = {
   getNewestNews: async (): Promise<News[]> => {
-    const newsIds: number[] = await (
-      await fetch(`${CONSTANTS.API_URL}newstories.json`)
-    ).json()
+    const newsIds: number[] = await fetch(
+      `${CONSTANTS.API_URL}newstories.json`
+    ).then((response) => {
+      if (response.ok) return response.json()
+      throw new Error('failed to fetch news')
+    })
 
     const newsRequests = newsIds
       .slice(0, CONSTANTS.NEWS_ITEM_COUNT)

@@ -10,10 +10,14 @@ export const meta: V2_MetaFunction = () => {
 }
 
 export const loader = async () => {
-  const response = await apiService.getNewestNews()
-  return json(response, {
-    headers: {'Cache-Control': `max-age=${CONSTANTS.REFETCH_TIMEOUT}`},
-  })
+  try {
+    const data = await apiService.getNewestNews()
+    return json(data, {
+      headers: {'Cache-Control': `max-age=${CONSTANTS.REFETCH_TIMEOUT}`},
+    })
+  } catch (e) {
+    throw new Error(`Loader Error: ${(e as Error).message}`)
+  }
 }
 
 const Index = () => {
@@ -23,13 +27,16 @@ const Index = () => {
 
   useRefetch(revalidate, CONSTANTS.REFETCH_TIMEOUT)
 
+  const onClickHandler = () => {
+    revalidate()
+  }
   const Row = ({index, style}: {index: number; style?: React.CSSProperties}) => (
     <CardItem data={products[index]} key={index} style={style} />
   )
   return (
     size.height && (
       <>
-        <ReplayIcon onClick={revalidate} style={{cursor: 'pointer'}} />
+        <ReplayIcon onClick={onClickHandler} style={{cursor: 'pointer'}} />
         <List
           height={size.height - CONSTANTS.LIST_HEIGHT}
           itemCount={products.length}
