@@ -19,13 +19,17 @@ export const CommentItem: React.FC<CommentProps> = ({comment, depth, items}) => 
   const [children, setChildren] = useState(items)
   const [expanded, setExpanded] = useState(false)
   const onClickHandler = async () => {
-    if (comment.kids) {
-      const data = await apiService.getComments(comment.kids)
-      setChildren(data)
-      setExpanded(true)
+    try {
+      if (comment.kids) {
+        const data = await apiService.getComments(comment.kids)
+        setChildren(data)
+        setExpanded(true)
+      }
+    } catch (e) {
+      throw new Error(`Fetch Error: ${(e as Error).message}`)
     }
   }
-  const onnCloseHandler = () => {
+  const onCloseHandler = () => {
     setExpanded(false)
   }
   return (
@@ -38,10 +42,7 @@ export const CommentItem: React.FC<CommentProps> = ({comment, depth, items}) => 
           </Time>
           {comment?.kids &&
             (expanded ? (
-              <ExpandLessIcon
-                onClick={onnCloseHandler}
-                style={{cursor: 'pointer'}}
-              />
+              <ExpandLessIcon onClick={onCloseHandler} style={{cursor: 'pointer'}} />
             ) : (
               <KeyboardArrowDownIcon
                 onClick={onClickHandler}

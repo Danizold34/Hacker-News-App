@@ -18,15 +18,19 @@ export const meta: V2_MetaFunction = () => {
 }
 
 export const loader = async ({params}: LoaderArgs) => {
-  if (params.articleId) {
-    const articleData = await apiService.getArticleById(+params.articleId)
-    if (articleData.descendants > 0) {
-      const comments = await apiService.getComments(articleData.kids)
-      return {...articleData, comments: comments}
+  try {
+    if (params.articleId) {
+      const articleData = await apiService.getArticleById(+params.articleId)
+      if (articleData.descendants > 0) {
+        const comments = await apiService.getComments(articleData.kids)
+        return {...articleData, comments: comments}
+      }
+      return {...articleData, comments: null}
     }
-    return {...articleData, comments: null}
+    return null
+  } catch (e) {
+    throw new Error(`Loader Error: ${(e as Error).message}`)
   }
-  return null
 }
 
 const ArticleInfo = () => {
