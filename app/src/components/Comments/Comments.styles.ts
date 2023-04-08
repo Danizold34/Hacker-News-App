@@ -7,13 +7,10 @@ export const ArticleWrapper = styled('div')`
   gap: 40px;
 `
 
-export const Wrapper = styled('div')`
-  display: flex;
+export const Wrapper = styled(ArticleWrapper)`
   width: 100%;
   height: 100%;
   justify-content: start;
-  gap: 40px;
-  flex-direction: column;
 `
 
 export const Title = styled(Typography)`

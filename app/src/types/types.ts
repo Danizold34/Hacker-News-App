@@ -1,21 +1,20 @@
-export interface News {
+export interface Common {
   id: number
   by: string
+  time: number
+  type: string
+}
+
+export interface News extends Common {
   descendants: number
   score: number
-  time: number
   title: string
-  type: 'story'
   url: string
   kids: number[]
 }
 
-export interface Comment {
-  by: string
-  id: number
-  kids?: number[]
+export interface Comment extends Common {
   parent: number
   text: string
-  time: number
-  type: 'comment'
+  kids?: number[]
 }
